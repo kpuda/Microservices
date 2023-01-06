@@ -1,0 +1,39 @@
+version: '3'
+services:
+  spring-rest:
+    container_name: rest-microservice
+    image: spring-microservice-rest:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - spring-db
+    networks:
+      - spring
+    env_file: #You can either use .env file with values or use environment:
+      - .env-rest
+  spring-db:
+    container_name: db-microservice
+    image: spring-microservice-db:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - spring
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - mysql
+    restart: on-failure
+  mysql:
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: microservice
+    ports:
+      - 3306:3306
+    networks:
+      - spring
+networks:
+  spring:
+    driver: bridge
