@@ -18,6 +18,11 @@ Technologies used:<br>
 In order to run project you need to have Docker and Maven installed (and added to environment variables - to be abble to use it from command line).
 <h1>How to</h1>
 First You have to generate .jar files for every microservice (db and rest ones).<br><br>
+
+    in SpringDockerMicroservice directory execute this command:
+
+    mvn clean compile
+
 If .jar files are generated in both services You should access db.microservice directory and execute command 
 
     docker build -t spring-microservice-db .
