@@ -1,14 +1,14 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    username: root
-    url: jdbc:mysql://localhost:3306/microservice
-    password: root
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
-    hibernate:
-      ddl-auto: create-drop
+#    hibernate:
+#      ddl-auto: create-drop
   application:
     name: 'USER-SERVICE'
 
