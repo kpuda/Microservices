@@ -2,22 +2,33 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="rest.microservice" />
+        <module name="order-service" />
+        <module name="user-service" />
+        <module name="cloud-gateway" />
+        <module name="service-registry" />
         <module name="db.microservice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Microservices (1)" target="18" />
+      <module name="order-service" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ORDER-service" options="-parameters" />
+      <module name="cloud-gateway" options="-parameters" />
       <module name="db.microservice" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="rest.microservice" options="-parameters" />
+      <module name="service-registry" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>

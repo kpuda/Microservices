@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/MicroServices/db.microservice/pom.xml" />
         <option value="$PROJECT_DIR$/MicroServices/rest.microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/pom.xml" />
+        <option value="$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/order-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
