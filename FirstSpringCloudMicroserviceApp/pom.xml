@@ -16,9 +16,9 @@
     </properties>
 
     <modules>
-        <module>cloud-gateway</module>
-        <module>departament-service</module>
-        <module>service-registry</module>
-        <module>user-service</module>
+        <module>1-service-registry</module>
+        <module>2-cloud-gateway</module>
+        <module>3-order-service</module>
+        <module>4-user-service</module>
     </modules>
 </project>
