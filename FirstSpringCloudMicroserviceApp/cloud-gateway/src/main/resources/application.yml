@@ -11,6 +11,7 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/users/**
+            - Method=GET,POST
           filters:
             - name: CircuitBreaker
               args:
@@ -20,6 +21,7 @@ spring:
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order/**
+            - Method=GET,POST
           filters:
             - name: CircuitBreaker
               args:
