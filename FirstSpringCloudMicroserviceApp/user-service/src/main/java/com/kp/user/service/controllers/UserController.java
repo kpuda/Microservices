@@ -2,6 +2,7 @@ package com.kp.user.service.controllers;
 
 import com.kp.user.service.dto.UserDto;
 import com.kp.user.service.responses.ResponseObject;
+import com.kp.user.service.responses.UserResponseObject;
 import com.kp.user.service.responses.WrappedResponseObject;
 import com.kp.user.service.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,10 @@ public class UserController {
     @GetMapping("/all")
     public WrappedResponseObject getUsers(){
         return userService.getUsers();
+    }
+
+    @GetMapping("/{id}")
+    public UserResponseObject getUser(@PathVariable Long id){
+        return userService.getUser(id);
     }
 }
