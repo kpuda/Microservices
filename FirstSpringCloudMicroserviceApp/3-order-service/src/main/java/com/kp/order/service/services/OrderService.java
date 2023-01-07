@@ -31,6 +31,10 @@ public class OrderService {
         } catch (HttpStatusCodeException exception) {
             return ResponseEntity.status(exception.getStatusCode()).headers(exception.getResponseHeaders())
                     .body(exception.getResponseBodyAsString());
+        } catch (IllegalStateException exception) {
+            //todo think about circuit breaker inside cloud??
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                    .body(new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Server unavailable"));
         }
 
         return ResponseEntity.ok(new ResponseObject(HttpStatus.CREATED.value(), "Created"));
