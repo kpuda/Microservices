@@ -8,8 +8,8 @@
 		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.kp</groupId>
-	<artifactId>ORDER-service</artifactId>
+	<groupId>com.kp.order.service</groupId>
+	<artifactId>order-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ORDER-service</name>
 	<description>Demo project for Spring Boot</description>

@@ -1,15 +1,18 @@
 package com.kp.order.service.services;
 
-import com.kp.order.service.dto.OrderDto;
+import com.kp.order.service.dto.OrderModel;
 import com.kp.order.service.entity.Order;
 import com.kp.order.service.repositories.OrderRepository;
 import com.kp.order.service.responses.ResponseObject;
+import com.kp.order.service.responses.UserResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
-import com.kp.order.service.tools.Mapper;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.List;
 
@@ -18,13 +21,19 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final Mapper mapper;
+    private final ConnectionService connectionService;
 
     @Transactional
-    public ResponseObject postOrder(OrderDto orderDto) {
-        Order user = mapper.mapToOrder(orderDto);
-        Order save = orderRepository.save(user);
-        return new ResponseObject(HttpStatus.CREATED.value(), "Created");
+    public ResponseEntity<?> postOrder(OrderModel orderModel) {
+        UserResponseObject userResponse;
+        try {
+            userResponse = connectionService.getUser(orderModel.getUserId());
+        } catch (HttpStatusCodeException exception) {
+            return ResponseEntity.status(exception.getStatusCode()).headers(exception.getResponseHeaders())
+                    .body(exception.getResponseBodyAsString());
+        }
+
+        return ResponseEntity.ok(new ResponseObject(HttpStatus.CREATED.value(), "Created"));
     }
 
     @Transactional

@@ -2,16 +2,17 @@ package com.kp.order.service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
-@NoArgsConstructor
-public class OrderDto {
+public class OrderModel {
 
-    private Long id;
-    private String userId;
-    private String lastName;
+    private long userId;
+    private List<Products> productsList;
 }

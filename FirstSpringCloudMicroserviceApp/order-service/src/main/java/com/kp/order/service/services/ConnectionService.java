@@ -1,8 +1,9 @@
 package com.kp.order.service.services;
 
-import com.kp.order.service.responses.ResponseObject;
+import com.kp.order.service.responses.UserResponseObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -11,7 +12,7 @@ public class ConnectionService {
 
     private final RestTemplate restTemplate;
 
-    public void getDepartament(long id) {
-        ResponseObject forObject = restTemplate.getForObject("http://USER-SERVICE/user", ResponseObject.class);
+    public UserResponseObject getUser(long id) throws HttpStatusCodeException {
+        return restTemplate.getForObject("http://USER-SERVICE/users/{id}", UserResponseObject.class, id);
     }
 }
