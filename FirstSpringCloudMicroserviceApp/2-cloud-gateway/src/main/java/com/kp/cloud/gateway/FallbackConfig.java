@@ -13,15 +13,15 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 
-//@Configuration !!TODO!! This is the way of reactive responses. This works aswell if you uncomment config and bean annotations
+@Configuration
 public class FallbackConfig {
 
-//    @Bean
+    @Bean
     public RouterFunction<ServerResponse> routerFunction() {
         return RouterFunctions
                 .route(RequestPredicates.GET("/fallback/userServiceFallback"),
                         this::handleGetFallback)
-                .andRoute(RequestPredicates.POST("/book-fallback"),
+                .andRoute(RequestPredicates.POST("/fallback/orderServiceFallback"),
                         this::handlePostFallback);
     }
 
@@ -30,6 +30,6 @@ public class FallbackConfig {
     }
 
     public Mono<ServerResponse> handlePostFallback(ServerRequest request) {
-        return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body(Mono.just(new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Request takes longer than expected. Please try again later.")), ResponseObject.class);
     }
 }

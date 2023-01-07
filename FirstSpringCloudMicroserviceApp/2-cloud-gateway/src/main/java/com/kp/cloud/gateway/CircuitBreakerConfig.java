@@ -9,12 +9,12 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
-//@Configuration !!TODO!! This is the way of reactive responses. This works aswell if you uncomment config and bean annotations
+@Configuration
 public class CircuitBreakerConfig {
 
-    private static final Duration TIMEOUT = Duration.ofSeconds(1);
+    private static final Duration TIMEOUT = Duration.ofSeconds(4);
 
-//    @Bean
+    @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
                 .circuitBreakerConfig(io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.custom()
