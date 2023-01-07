@@ -17,7 +17,7 @@
 
     <modules>
         <module>cloud-gateway</module>
-        <module>departament-service</module>
+        <module>order-service</module>
         <module>service-registry</module>
         <module>user-service</module>
     </modules>
