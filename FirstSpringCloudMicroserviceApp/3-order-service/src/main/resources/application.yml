@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: ORDER-SERVICE
   datasource:
     url: jdbc:h2:mem:mydb
     username: sa
@@ -7,13 +9,8 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
-    hibernate:
-      ddl-auto: create-drop
-  application:
-    name: 'ORDER-SERVICE'
-
-server:
-  port: '8081'
+  server:
+    port: 8081
 
 eureka:
   client:

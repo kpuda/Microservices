@@ -11,7 +11,4 @@ public class ConnectionService {
 
     private final RestTemplate restTemplate;
 
-    public void getDepartament(long id){
-        ResponseObject forObject = restTemplate.getForObject("http://ORDER-SERVICE/order", ResponseObject.class);
-    }
 }

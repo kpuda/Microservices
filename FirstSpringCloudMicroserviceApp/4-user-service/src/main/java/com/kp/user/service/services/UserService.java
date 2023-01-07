@@ -1,5 +1,6 @@
 package com.kp.user.service.services;
 
+import com.kp.user.service.ServerConst;
 import com.kp.user.service.dto.UserDto;
 import com.kp.user.service.entity.User;
 import com.kp.user.service.repositories.UserRepository;
@@ -7,6 +8,8 @@ import com.kp.user.service.responses.ResponseObject;
 import com.kp.user.service.responses.UserResponseObject;
 import com.kp.user.service.responses.WrappedResponseObject;
 import com.kp.user.service.tools.Mapper;
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,8 +28,11 @@ public class UserService {
 
     @Transactional
     public ResponseObject postUser(UserDto userDto) {
-        User user = mapper.mapToUser(userDto);
-        User save = userRepository.save(user);
+        Optional<User> byFirstNameAndLastName = userRepository.findByFirstNameAndLastName(userDto.getFirstName(), userDto.getLastName());
+        if (byFirstNameAndLastName.isPresent()) {
+            throw new EntityExistsException(ServerConst.USER_EXISTS_ALREADY.toString());
+        }
+        userRepository.save(mapper.mapToUser(userDto));
         return new ResponseObject(HttpStatus.CREATED.value(), "Created");
     }
 
@@ -43,5 +49,11 @@ public class UserService {
         }
         UserDto userDto = mapper.maptoUserDto(byId.get());
         return new UserResponseObject(HttpStatus.OK.value(), "User found", userDto);
+    }
+
+    @PostConstruct
+    void addUser() {
+        UserDto userDto = new UserDto("James", "Blake");
+        userRepository.save(mapper.mapToUser(userDto));
     }
 }
