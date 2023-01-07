@@ -16,17 +16,17 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseObject postUser(@RequestBody UserDto userDto){
+    public ResponseObject postUser(@RequestBody UserDto userDto) {
         return userService.postUser(userDto);
     }
 
     @GetMapping("/all")
-    public WrappedResponseObject getUsers(){
+    public WrappedResponseObject getUsers() {
         return userService.getUsers();
     }
 
     @GetMapping("/{id}")
-    public UserResponseObject getUser(@PathVariable Long id){
+    public UserResponseObject getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 }
