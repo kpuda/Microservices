@@ -1,14 +1,18 @@
 package com.kp.order.service.controllers;
 
-import com.kp.order.service.dto.OrderModel;
-import com.kp.order.service.responses.WrappedResponseObject;
+import com.kp.order.service.dto.OrderLineItemsDto;
+import com.kp.order.service.dto.OrderRequest;
+import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.services.OrderService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
@@ -17,12 +21,15 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> postOrder(@RequestBody OrderModel orderModel) {
-        return orderService.postOrder(orderModel);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CompletableFuture<ResponseObject> placeOrder(@RequestBody OrderRequest orderRequest) {
+        return orderService.placeOrder(orderRequest);
     }
 
-    @GetMapping
-    public WrappedResponseObject getUsers() {
-        return orderService.getDepartaments();
+    @PostConstruct
+    void run() {
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setOrderLineItemsDtoList(List.of(new OrderLineItemsDto(1l, "xd", BigDecimal.ONE, 321)));
+        System.out.println(orderRequest.toString());
     }
 }

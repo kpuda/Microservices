@@ -1,21 +1,24 @@
 package com.kp.order.service.services;
 
-import com.kp.order.service.dto.OrderModel;
+import com.kp.order.service.dto.InventoryResponse;
+import com.kp.order.service.dto.OrderLineItemsDto;
+import com.kp.order.service.dto.OrderRequest;
 import com.kp.order.service.entity.Order;
+import com.kp.order.service.entity.OrderLineItems;
 import com.kp.order.service.repositories.OrderRepository;
 import com.kp.order.service.responses.ResponseObject;
-import com.kp.order.service.responses.UserResponseObject;
-import com.kp.order.service.responses.WrappedResponseObject;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -23,26 +26,47 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ConnectionService connectionService;
 
-    @Transactional
-    public ResponseEntity<?> postOrder(OrderModel orderModel) {
-        UserResponseObject userResponse;
-        try {
-            userResponse = connectionService.getUser(orderModel.getUserId());
-        } catch (HttpStatusCodeException exception) {
-            return ResponseEntity.status(exception.getStatusCode()).headers(exception.getResponseHeaders())
-                    .body(exception.getResponseBodyAsString());
-        } catch (IllegalStateException exception) {
-            //todo think about circuit breaker inside cloud??
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body(new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Server unavailable"));
-        }
 
-        return ResponseEntity.ok(new ResponseObject(HttpStatus.CREATED.value(), "Created"));
+    @Transactional
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+    public CompletableFuture<ResponseObject> placeOrder(OrderRequest orderRequest) {
+        log.info("New request for placing order");
+        Order order = new Order();
+        order.setOrderNumber(UUID.randomUUID().toString());
+
+        List<OrderLineItems> orderLineItems = orderRequest.getOrderLineItemsDtoList()
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+
+        order.setOrderLineItemsList(orderLineItems);
+
+        List<String> rfidList = order.getOrderLineItemsList().stream()
+                .map(OrderLineItems::getRfidCode)
+                .toList();
+        log.info("Checking if items are in stock");
+        List<InventoryResponse> inStock = connectionService.isInStock(rfidList);
+
+        boolean allProductsInStock = inStock.stream().allMatch(InventoryResponse::isInStock);
+
+        if (allProductsInStock) {
+            log.info("Saving new order");
+            orderRepository.save(order);
+            return CompletableFuture.supplyAsync(() -> new ResponseObject(HttpStatus.CREATED.value(), "Order Placed Successfully"));
+        } else {
+            throw new IllegalArgumentException("Product is not in stock, please try again later");
+        }
     }
 
-    @Transactional
-    public WrappedResponseObject getDepartaments() {
-        List<Order> all = orderRepository.findAll();
-        return new WrappedResponseObject(HttpStatus.OK.value(), "List of users", all);
+    public CompletableFuture<ResponseObject> fallbackMethod(OrderRequest orderRequest, Throwable runtimeException) {
+        return CompletableFuture.supplyAsync(() -> new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!"));
+    }
+
+    private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
+        OrderLineItems orderLineItems = new OrderLineItems();
+        orderLineItems.setPrice(orderLineItemsDto.getPrice());
+        orderLineItems.setQuantity(orderLineItemsDto.getQuantity());
+        orderLineItems.setRfidCode(orderLineItemsDto.getRfidCode());
+        return orderLineItems;
     }
 }
