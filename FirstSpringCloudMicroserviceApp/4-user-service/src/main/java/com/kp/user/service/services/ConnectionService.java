@@ -14,8 +14,12 @@ public class ConnectionService {
     private final OrderClient orderClient;
 
     @SneakyThrows
-    public CompletableFuture<WrappedResponseObject> getOrders() {
-        return CompletableFuture.supplyAsync(orderClient::getOrders);
+    public CompletableFuture<WrappedResponseObject> getOrders(long id) {
+        return orderClient.getOrders(id);
     }
 
+    @SneakyThrows
+    public CompletableFuture<WrappedResponseObject> getUserOrder(long id, long orderId) {
+        return orderClient.getUserOrder(id, orderId);
+    }
 }

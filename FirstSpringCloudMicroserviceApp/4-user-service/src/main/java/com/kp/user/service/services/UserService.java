@@ -9,17 +9,14 @@ import com.kp.user.service.responses.UserResponseObject;
 import com.kp.user.service.responses.WrappedResponseObject;
 import com.kp.user.service.tools.Mapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,12 +38,6 @@ public class UserService {
         return new ResponseObject(HttpStatus.CREATED.value(), "Created");
     }
 
-    @Transactional
-    public WrappedResponseObject getUsers() {
-        List<User> all = userRepository.findAll();
-        return new WrappedResponseObject(HttpStatus.OK.value(), "List of users", all);
-    }
-
     public UserResponseObject getUser(Long id) {
         Optional<User> byId = userRepository.findById(id);
         if (byId.isEmpty()) {
@@ -56,20 +47,25 @@ public class UserService {
         return new UserResponseObject(HttpStatus.OK.value(), "User found", userDto);
     }
 
-    @PostConstruct
-    void addUser() {
-        UserDto userDto = new UserDto("James", "Blake");
-        User user = mapper.mapToUser(userDto);
-        userRepository.save(user);
+
+    @CircuitBreaker(name = "order-service", fallbackMethod = "userOrdersFallbackMethod")
+    public CompletableFuture<WrappedResponseObject> getUserOrders(Long id, HttpServletResponse response) {
+        return connectionService.getOrders(id);
     }
 
-    @CircuitBreaker(name = "order-service", fallbackMethod = "fallbackMethod")
+    @CircuitBreaker(name = "order-service", fallbackMethod = "userOrderFallbackMethod")
     public CompletableFuture<WrappedResponseObject> getUserOrder(Long id, Long orderId, HttpServletResponse response) {
-        return connectionService.getOrders();
+        return connectionService.getUserOrder(id,orderId);
     }
 
-    public CompletableFuture<ResponseObject> fallbackMethod(Long id, Long orderId, HttpServletResponse response, RuntimeException runtimeException) {
+    public CompletableFuture<WrappedResponseObject> userOrdersFallbackMethod(Long id, HttpServletResponse response, RuntimeException runtimeException) {
         response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return CompletableFuture.supplyAsync(() -> new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!"));
+        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!",null));
     }
+
+    public CompletableFuture<WrappedResponseObject> userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response) {
+        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!",null));
+    }
+
 }

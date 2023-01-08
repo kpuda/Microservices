@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class Mapper {
 
-    private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper= new ModelMapper();
 
     public User mapToUser(UserDto userDto) {
         return modelMapper.map(userDto, User.class);
