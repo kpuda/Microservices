@@ -27,6 +27,16 @@ spring:
               args:
                 name: orderServiceCircuitBreaker
                 fallbackuri: forward:/fallback/orderServiceFallback
+        - id: INVENTORY-SERVICE
+          uri: lb://INVENTORY-SERVICE
+          predicates:
+            - Path=/inventory/**
+            - Method=GET,POST
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: inventorServiceCircuitBreaker
+                fallbackuri: forward:/fallback/inventoryServiceFallback
 
 eureka:
   client:
