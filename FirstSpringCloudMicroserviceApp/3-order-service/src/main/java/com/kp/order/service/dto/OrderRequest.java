@@ -11,5 +11,6 @@ import java.util.List;
 @Setter
 @ToString
 public class OrderRequest {
-    private List<OrderLineItemsDto> orderLineItemsDtoList;
+    private long userId;
+    private List<OrderItemsDto> orderList;
 }

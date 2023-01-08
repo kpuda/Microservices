@@ -1,17 +1,18 @@
 package com.kp.order.service.controllers;
 
-import com.kp.order.service.dto.OrderLineItemsDto;
 import com.kp.order.service.dto.OrderRequest;
+import com.kp.order.service.entity.Order;
 import com.kp.order.service.responses.ResponseObject;
+import com.kp.order.service.responses.WrappedResponseObject;
 import com.kp.order.service.services.OrderService;
-import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/order")
@@ -22,14 +23,24 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompletableFuture<ResponseObject> placeOrder(@RequestBody OrderRequest orderRequest) {
-        return orderService.placeOrder(orderRequest);
+    public ResponseEntity<ResponseObject> placeOrder(@RequestBody OrderRequest orderRequest, HttpServletResponse response, HttpServletRequest request) {
+        return orderService.placeOrder(orderRequest, response, request);
     }
 
-    @PostConstruct
-    void run() {
-        OrderRequest orderRequest = new OrderRequest();
-        orderRequest.setOrderLineItemsDtoList(List.of(new OrderLineItemsDto(1l, "xd", BigDecimal.ONE, 321)));
-        System.out.println(orderRequest.toString());
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public WrappedResponseObject getOrders(@PathVariable Long id) {
+        return orderService.getUserOrders(id);
     }
+
+    @GetMapping("/{id}/{orderId}")
+    public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId) {
+        return orderService.getUserOrder(id, orderId);
+    }
+
+    @GetMapping("/all")
+    public List<Order> getAllOrders() {
+        return orderService.getAll();
+    }
+
 }
