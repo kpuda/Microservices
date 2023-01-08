@@ -24,6 +24,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ConnectionService connectionService;
     private final Mapper mapper;
 
     @Transactional

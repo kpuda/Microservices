@@ -1,13 +1,17 @@
 package com.kp.user.service.services;
 
+import com.kp.user.service.responses.WrappedResponseObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
 public class ConnectionService {
 
-    private final RestTemplate restTemplate;
+    private final OrderClient orderClient;
+
+    public WrappedResponseObject getOrders() {
+        return orderClient.getOrders();
+    }
 
 }

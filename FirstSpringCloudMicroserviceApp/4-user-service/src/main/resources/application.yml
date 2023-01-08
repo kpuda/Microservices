@@ -9,8 +9,9 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
-  server:
-    port: 8080
+
+server:
+  port: 8080
 
 eureka:
   client:
