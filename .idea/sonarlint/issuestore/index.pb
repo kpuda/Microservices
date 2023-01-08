@@ -15,8 +15,6 @@ m
 =FirstSpringCloudMicroserviceApp/1-service-registry/.gitignore,4\3\43b05d54d3d242540a92c51d2839179288dcb015
 d
 4FirstSpringCloudMicroserviceApp/2-cloud-gateway/mvnw,1\0\103d0c6263d3aaf1361496ae23edc8a133a07653
-h
-8FirstSpringCloudMicroserviceApp/2-cloud-gateway/mvnw.cmd,2\9\29093991d7271a12d1947091b17dd3bce51751a8
 j
 :FirstSpringCloudMicroserviceApp/3-order-service/.gitignore,a\a\aad8a287d1fe3fb69b2a0e6e78186c6a4796f5a5
 g
