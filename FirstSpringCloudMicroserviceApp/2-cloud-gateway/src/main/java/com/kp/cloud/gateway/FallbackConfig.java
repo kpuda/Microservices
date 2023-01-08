@@ -30,7 +30,7 @@ public class FallbackConfig {
     }
 
     public Mono<ServerResponse> handlePostFallback(ServerRequest request) {
-        return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body(Mono.just(new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Request takes longer than expected. Please try again later.")), ResponseObject.class);
+        return ServerResponse.status(HttpStatus.SERVICE_UNAVAILABLE).body(Mono.just(new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Order service might be unavailable right now. Please try again later.")), ResponseObject.class);
     }
 
 }
