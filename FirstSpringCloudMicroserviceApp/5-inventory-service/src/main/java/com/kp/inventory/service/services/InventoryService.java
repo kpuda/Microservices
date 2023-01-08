@@ -1,7 +1,6 @@
 package com.kp.inventory.service.services;
 
 import com.kp.inventory.service.dto.InventoryResponse;
-import com.kp.inventory.service.entity.Inventory;
 import com.kp.inventory.service.repositories.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
