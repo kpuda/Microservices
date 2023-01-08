@@ -1,7 +1,9 @@
 package com.kp.order.service.tools;
 
 import com.kp.order.service.dto.OrderDto;
+import com.kp.order.service.dto.OrderItemsDto;
 import com.kp.order.service.entity.Order;
+import com.kp.order.service.entity.OrderItems;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -15,4 +17,9 @@ public class Mapper {
     public OrderDto mapToOrderDto(Order order) {
         return modelMapper.map(order, OrderDto.class);
     }
+
+    public OrderItems mapToOrderItems(OrderItemsDto orderItemsDto) {
+        return modelMapper.map(orderItemsDto, OrderItems.class);
+    }
+
 }

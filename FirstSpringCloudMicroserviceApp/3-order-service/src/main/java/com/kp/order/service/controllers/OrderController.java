@@ -1,7 +1,6 @@
 package com.kp.order.service.controllers;
 
 import com.kp.order.service.dto.OrderRequest;
-import com.kp.order.service.entity.Order;
 import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
 import com.kp.order.service.services.OrderService;
@@ -11,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -37,10 +34,4 @@ public class OrderController {
     public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId) {
         return orderService.getUserOrder(id, orderId);
     }
-
-    @GetMapping("/all")
-    public List<Order> getAllOrders() {
-        return orderService.getAll();
-    }
-
 }

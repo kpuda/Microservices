@@ -10,7 +10,6 @@ import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
 import com.kp.order.service.tools.Mapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +32,6 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ConnectionService connectionService;
 
-
     @SneakyThrows
     @Transactional
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
@@ -46,7 +43,7 @@ public class OrderService {
 
         order.setOrderItemsList(orderRequest.getOrderList()
                 .stream()
-                .map(this::mapToDto)
+                .map(mapper::mapToOrderItems)
                 .toList());
 
         List<String> rfidList = order.getOrderItemsList().stream()
@@ -79,6 +76,7 @@ public class OrderService {
         return new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order)));
     }
 
+    /* FALLBACK METHODS */
     public ResponseEntity<ResponseObject> fallbackMethod(OrderRequest orderRequest, HttpServletResponse response, HttpServletRequest request, Throwable runtimeException) {
         log.info("Fallback method");
         ResponseObject responseObject = new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Inventory service is unavailable at this moment, please order after some time!");
@@ -99,24 +97,4 @@ public class OrderService {
         return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), "There was problem while fetching given order", null);
     }
 
-
-    private OrderItems mapToDto(OrderItemsDto orderItemsDto) {
-        OrderItems orderItems = new OrderItems();
-        orderItems.setPrice(orderItemsDto.getPrice());
-        orderItems.setQuantity(orderItemsDto.getQuantity());
-        orderItems.setRfidCode(orderItemsDto.getRfidCode());
-        return orderItems;
-    }
-
-    public List<Order> getAll() {
-        return orderRepository.findAll();
-    }
-
-    @PostConstruct
-    void run() {
-        Order order = new Order(1l, 1l, UUID.randomUUID().toString(), List.of(new OrderItems(1l, "milk", BigDecimal.valueOf(2.22), 2), new OrderItems(2l, "Eggs", BigDecimal.valueOf(10.23), 3)));
-        Order order2 = new Order(2l, 1l, UUID.randomUUID().toString(), List.of(new OrderItems(3l, "coffee", BigDecimal.valueOf(2.22), 2), new OrderItems(4l, "Bacon", BigDecimal.valueOf(10.23), 3)));
-        orderRepository.save(order);
-        orderRepository.save(order2);
-    }
 }

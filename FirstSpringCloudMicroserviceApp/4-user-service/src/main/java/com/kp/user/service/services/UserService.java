@@ -58,6 +58,7 @@ public class UserService {
         return connectionService.getUserOrder(id,orderId);
     }
 
+    /* FALLBACK METHODS */
     public CompletableFuture<WrappedResponseObject> userOrdersFallbackMethod(Long id, HttpServletResponse response, RuntimeException runtimeException) {
         response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
         return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!",null));
