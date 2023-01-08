@@ -3,6 +3,8 @@ package com.kp.user.service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -17,6 +19,8 @@ public class User {
     private long id;
     private String firstName;
     private String lastName;
+    @ElementCollection
+    private List<Long> orderIdList;
 
 }
 

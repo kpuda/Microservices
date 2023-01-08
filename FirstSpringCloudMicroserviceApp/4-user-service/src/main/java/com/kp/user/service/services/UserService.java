@@ -8,9 +8,12 @@ import com.kp.user.service.responses.ResponseObject;
 import com.kp.user.service.responses.UserResponseObject;
 import com.kp.user.service.responses.WrappedResponseObject;
 import com.kp.user.service.tools.Mapper;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +59,17 @@ public class UserService {
     @PostConstruct
     void addUser() {
         UserDto userDto = new UserDto("James", "Blake");
-        userRepository.save(mapper.mapToUser(userDto));
+        User user = mapper.mapToUser(userDto);
+        userRepository.save(user);
+    }
+
+    @CircuitBreaker(name = "order-service", fallbackMethod = "fallbackMethod")
+    public CompletableFuture<WrappedResponseObject> getUserOrder(Long id, Long orderId, HttpServletResponse response) {
+        return connectionService.getOrders();
+    }
+
+    public CompletableFuture<ResponseObject> fallbackMethod(Long id, Long orderId, HttpServletResponse response, RuntimeException runtimeException) {
+        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
+        return CompletableFuture.supplyAsync(() -> new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!"));
     }
 }

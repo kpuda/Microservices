@@ -6,6 +6,8 @@
     <file url="file://$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/3-order-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/3-order-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/4-user-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/5-inventory-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/FirstSpringCloudMicroserviceApp/5-inventory-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroServices/db.microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroServices/db.microservice/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroServices/rest.microservice/src/main/java" charset="UTF-8" />
