@@ -66,12 +66,14 @@ public class OrderService {
 
     @CircuitBreaker(name = "inventory", fallbackMethod = "userOrdersFallbackMethod")
     public WrappedResponseObject getUserOrders(Long id) {
+        log.info("Fetching order list for user");
         List<Order> orderList = orderRepository.findAllByUserId(id);
         return new WrappedResponseObject(HttpStatus.OK.value(), "Fetching orders list", orderList.stream().map(mapper::mapToOrderDto).toList());
     }
 
     @CircuitBreaker(name = "inventory", fallbackMethod = "userOrderFallbackMethod")
     public WrappedResponseObject getUserOrder(long id, long orderId) {
+        log.info("Fetching given order for user");
         Order order = orderRepository.findByIdAndUserId(orderId, id);
         return new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order)));
     }

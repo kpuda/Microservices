@@ -30,7 +30,7 @@ public class OrderController {
         return orderService.getUserOrders(id);
     }
 
-    @GetMapping("/{id}/{orderId}")
+    @GetMapping("/{id}/orders/{orderId}")
     public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId) {
         return orderService.getUserOrder(id, orderId);
     }

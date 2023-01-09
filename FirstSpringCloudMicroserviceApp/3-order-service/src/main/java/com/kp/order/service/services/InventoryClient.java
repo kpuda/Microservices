@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "inventory-service")
+@FeignClient(name = "inventory-service", path = "/inventor")
 public interface InventoryClient {
 
-    @GetMapping("/inventory")
+    @GetMapping
     public List<InventoryResponse> isInStock(@RequestParam List<String> rfidList);
 
 }
