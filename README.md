@@ -1,4 +1,4 @@
-# Welcome to Microservices repository
+# Welcome to Microservices repository [![Hits](https://hits.sh/github.com/kpuda/Microservices.svg)](https://hits.sh/github.com/kpuda/Microservices/)
 
 # About
 Microservices repo is to learn interesting stuff around microservices. In directories inside You can find few solutions about 'how to handle microservices'. Of course everthing You see here is my point of view on this advanced topic.
