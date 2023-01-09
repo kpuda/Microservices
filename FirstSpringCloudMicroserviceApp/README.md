@@ -19,13 +19,13 @@ Here is the approach to the microservices topic using Spring Cloud. This solutio
 </ol>
 Thanks to the service registry, each new running service is registered in the network. Because being registered, services don't need to know their addresses - just application names.
 <br><br>API Gateway is the gateway for users. User is sending request with given endpoint and it's gateway job to distribute requests to the correspoding service.
-<br>For example:
+<br><br>
 
-Triggering User-Service
+<b>Example of triggering User-Service</b>
 
     localhost:9191/user/1
 
-Triggering Order-Service
+<b>Example of triggering Order-Service</b>
 
     localhost:9191/order/1
 
