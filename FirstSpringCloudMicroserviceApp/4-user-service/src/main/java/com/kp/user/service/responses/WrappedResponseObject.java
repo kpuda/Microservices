@@ -1,13 +1,14 @@
 package com.kp.user.service.responses;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class WrappedResponseObject extends ResponseObject {
 
     private List<?> list;
@@ -17,3 +18,4 @@ public class WrappedResponseObject extends ResponseObject {
         this.list = list;
     }
 }
+

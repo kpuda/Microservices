@@ -9,8 +9,9 @@ spring:
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
-  server:
-    port: 8081
+
+server:
+  port: 8081
 
 eureka:
   client:
@@ -20,3 +21,25 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     instance:
       hostname: localhost
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory-service:
+        automaticTransitionFromOpenToHalfOpenEnabled: 'true'
+        failureRateThreshold: '50'
+        slidingWindowType: COUNT_BASED
+        event-consumer-buffer-size: '10'
+        registerHealthIndicator: 'true'
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: '3'
+        slidingWindowSize: '5'
+  retry:
+    instances:
+      inventory-service:
+        wait-duration: 5s
+        max-attempts: '3'
+  timelimiter:
+    instances:
+      inventory-service:
+        timeout-duration: 3s

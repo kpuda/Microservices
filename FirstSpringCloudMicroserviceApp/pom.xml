@@ -20,5 +20,6 @@
         <module>2-cloud-gateway</module>
         <module>3-order-service</module>
         <module>4-user-service</module>
+        <module>5-inventory-service</module>
     </modules>
 </project>

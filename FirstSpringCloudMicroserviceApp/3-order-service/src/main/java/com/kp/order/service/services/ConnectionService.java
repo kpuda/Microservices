@@ -1,18 +1,22 @@
 package com.kp.order.service.services;
 
-import com.kp.order.service.responses.UserResponseObject;
+import com.kp.order.service.dto.InventoryResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConnectionService {
 
-    private final RestTemplate restTemplate;
+    private final InventoryClient inventoryClient;
 
-    public UserResponseObject getUser(long id) throws HttpStatusCodeException {
-        return restTemplate.getForObject("http://USER-SERVICE/users/{id}", UserResponseObject.class, id);
+    public CompletableFuture<List<InventoryResponse>> isInStock(List<String> items) {
+        log.info("Connecting to the inventory-service");
+        return CompletableFuture.supplyAsync(() -> inventoryClient.isInStock(items));
     }
 }

@@ -1,14 +1,16 @@
 package com.kp.order.service.controllers;
 
-import com.kp.order.service.dto.OrderModel;
+import com.kp.order.service.dto.OrderRequest;
+import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
 import com.kp.order.service.services.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/order")
 @RequiredArgsConstructor
@@ -17,12 +19,19 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> postOrder(@RequestBody OrderModel orderModel) {
-        return orderService.postOrder(orderModel);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ResponseObject> placeOrder(@RequestBody OrderRequest orderRequest, HttpServletResponse response, HttpServletRequest request) {
+        return orderService.placeOrder(orderRequest, response, request);
     }
 
-    @GetMapping
-    public WrappedResponseObject getUsers() {
-        return orderService.getDepartaments();
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public WrappedResponseObject getOrders(@PathVariable Long id) {
+        return orderService.getUserOrders(id);
+    }
+
+    @GetMapping("/{id}/orders/{orderId}")
+    public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId) {
+        return orderService.getUserOrder(id, orderId);
     }
 }
