@@ -5,8 +5,7 @@ Microservices repo is to learn interesting stuff around microservices. In direct
 
 # Links
 * [Spring Docker Microservices](https://github.com/kpuda/Microservices/tree/main/SpringDockerMicroservice) project is based on Spring Boot and Docker images. Images of rest-service and db-service are simply communicating with each other through rest.
-* [First Spring Cloud project](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp) project is using technology provided by Spring Boot and Spring Cloud.TODO.
-
+* [First Spring Cloud project](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp) project is using technology provided by Spring Boot and Spring Cloud. Spring Cloud is really fun tool/framework to use, it help connecting microservices among network.
 # Technologies and tools used
 <ul>
 <li>Spring Boot - framework</li>
