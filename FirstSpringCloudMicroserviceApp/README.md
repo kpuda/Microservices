@@ -1,4 +1,14 @@
 # Welcome to the Spring Cloud microservices branch
+### Hands on 
+* [About](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#about) the project
+* [Simple diagram](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#simple-diagram)
+* [Prerequisite](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#prerequisites-docker-compose-version-under-development)
+* [How to](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#how-to)  tbd
+* [Available endpoints](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#available-endpoints)
+* [Request/Response objects](https://github.com/kpuda/Microservices/tree/main/FirstSpringCloudMicroserviceApp#requestresponse-objects)
+* [About]() .
+* [About]() .
+* [About]() .
 ## About
 Here is the approach to the microservices topic using Spring Cloud. This solution got me really fascinating by it's simplicity "out of the box". Basic implementation of this approach is straight forward, even encountering problems is really easy to solve using google.com
 <h3>Whole application consists of 5 microservices in total</h3>
@@ -60,7 +70,7 @@ There are few endpoints which are exposed to users.
 </li>
 </ol>
 
-### Request/Response objects
+## Request/Response objects
 #### Responses
 <ol>
 <li>Response object
