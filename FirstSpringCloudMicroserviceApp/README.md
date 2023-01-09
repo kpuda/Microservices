@@ -31,7 +31,8 @@ Thanks to the service registry, each new running service is registered in the ne
 
 
 ## 2. Simple diagram
-![Untitled Diagram drawio](https://user-images.githubusercontent.com/88575348/211272444-a8833801-e8bc-4e46-bdfe-e2314cd74043.png)
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/88575348/211302692-fddfd1b7-4e09-468a-9675-0c65159c678c.png)
+
 
 ## 3. Prerequisites (docker-compose version under development)
 In order to run project you need to have Docker and Maven installed (and added to environment variables - to be able to use it from command line).
