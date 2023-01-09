@@ -29,3 +29,82 @@ Triggering Order-Service
 In order to run project you need to have Docker and Maven installed (and added to environment variables - to be able to use it from command line).
 ## How to
 
+## Available endpoints
+There are few endpoints which are exposed to users.
+### USER-SERVICE
+<ol>
+<li>Add new user - POST request
+
+    localhost:9191/users
+</li>
+<li>Get user - GET request
+
+    localhost:9191/users/{id} -> e.g. for userId=1 localhost:9191/users/1 
+</li>
+<li>Get user order - GET request
+
+    localhost:9191/users/{id}/orders/{orderId} ->e.g. for userId=1 get order with orderId=3 localhost:9191/users/1/orders/3
+</li>
+<li>Get user orders - GET request
+
+    localhost:9191/users/{id}/orders -> e.g. for userId=1 localhost:9191/users/1/orders
+</li>
+</ol>
+
+### ORDER-SERVICE
+<ol>
+<li>Add new order - POST request
+
+    localhost:9191/order -> body required
+
+</li>
+</ol>
+
+### Request/Response objects
+#### Responses
+<ol>
+<li>Response object
+
+    {
+        "statusCode": int,
+        "message": String
+    }
+</li>
+<li>WrappedResponse object -> extended Response object
+
+    {
+        "statusCode": int,
+        "message": String,
+        "list": []
+    }
+</li>
+</ol>
+
+#### Requests
+<ol>
+<li>UserDto - Body for POST user
+
+    {
+        "id":1,
+        "firstName":"John",
+        "lastName":"Jones"
+    }
+</li>
+<li>Order request - Body for POST order
+
+    {
+    "userId":1,
+    "productsList": [
+        {
+            "name":"Eggs",
+            "quantity":10
+        },
+        {
+            "name":"Milk",
+            "quantity":5
+        }
+     ]
+    }
+</li>
+</ol>
+
