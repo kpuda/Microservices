@@ -13,6 +13,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -55,18 +57,18 @@ public class UserService {
 
     @CircuitBreaker(name = "order-service", fallbackMethod = "userOrderFallbackMethod")
     public CompletableFuture<WrappedResponseObject> getUserOrder(Long id, Long orderId, HttpServletResponse response) {
-        return connectionService.getUserOrder(id,orderId);
+        return connectionService.getUserOrder(id, orderId);
     }
 
     /* FALLBACK METHODS */
     public CompletableFuture<WrappedResponseObject> userOrdersFallbackMethod(Long id, HttpServletResponse response, RuntimeException runtimeException) {
         response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!",null));
+        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null));
     }
 
-    public CompletableFuture<WrappedResponseObject> userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response) {
+    public CompletableFuture<WrappedResponseObject> userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response,RuntimeException runtimeException) {
         response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!",null));
+        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null));
     }
 
 }

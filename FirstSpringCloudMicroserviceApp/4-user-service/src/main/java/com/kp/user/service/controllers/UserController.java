@@ -33,7 +33,7 @@ public class UserController {
         return userService.getUserOrders(id, response);
     }
 
-    @GetMapping("/{id}/{orderId}")
+    @GetMapping("/{id}/orders/{orderId}")
     public CompletableFuture<WrappedResponseObject> getUserOrders(@PathVariable Long id, @PathVariable Long orderId, final HttpServletResponse response) {
         return userService.getUserOrder(id, orderId, response);
     }
