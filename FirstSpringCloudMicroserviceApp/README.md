@@ -39,7 +39,7 @@ In order to run project you need to have Docker and Maven installed (and added t
 
 ## Available endpoints
 There are few endpoints which are exposed to users.
-### USER-SERVICE
+### 1. USER-SERVICE
 <ol>
 <li>Add new user - POST request
 
@@ -59,7 +59,7 @@ There are few endpoints which are exposed to users.
 </li>
 </ol>
 
-### ORDER-SERVICE
+### 2. ORDER-SERVICE
 <ol>
 <li>Add new order - POST request
 
