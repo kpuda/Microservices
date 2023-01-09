@@ -1,7 +1,7 @@
 package com.kp.order.service.services;
 
+import com.kp.order.service.controllers.NotFoundException;
 import com.kp.order.service.dto.InventoryResponse;
-import com.kp.order.service.dto.OrderItemsDto;
 import com.kp.order.service.dto.OrderRequest;
 import com.kp.order.service.entity.Order;
 import com.kp.order.service.entity.OrderItems;
@@ -72,9 +72,9 @@ public class OrderService {
     }
 
     @CircuitBreaker(name = "inventory", fallbackMethod = "userOrderFallbackMethod")
-    public WrappedResponseObject getUserOrder(long id, long orderId) {
+    public WrappedResponseObject getUserOrder(long id, long orderId, HttpServletResponse response) {
         log.info("Fetching given order for user");
-        Order order = orderRepository.findByIdAndUserId(orderId, id);
+        Order order = orderRepository.findByIdAndUserId(orderId, id).orElseThrow(() -> new NotFoundException("Order not found"));
         return new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order)));
     }
 
@@ -95,8 +95,9 @@ public class OrderService {
         return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), "There was problem while fetching user orders", null);
     }
 
-    public WrappedResponseObject userOrderFallbackMethod(Long id, long orderId, Throwable runtimeException) {
-        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), "There was problem while fetching given order", null);
+    public WrappedResponseObject userOrderFallbackMethod(long id, long orderId, HttpServletResponse response, Throwable exception) {
+        log.info("XD");
+        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), exception.getMessage(), null);
     }
 
 }
