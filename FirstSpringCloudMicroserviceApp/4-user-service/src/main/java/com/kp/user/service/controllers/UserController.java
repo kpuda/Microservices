@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders")
-    public CompletableFuture<WrappedResponseObject> getUserOrder(@PathVariable Long id, final HttpServletResponse response) {
+    public WrappedResponseObject getUserOrder(@PathVariable Long id, final HttpServletResponse response) {
         return userService.getUserOrders(id, response);
     }
 
     @GetMapping("/{id}/orders/{orderId}")
-    public CompletableFuture<WrappedResponseObject> getUserOrders(@PathVariable Long id, @PathVariable Long orderId, final HttpServletResponse response) {
+    public WrappedResponseObject getUserOrders(@PathVariable Long id, @PathVariable Long orderId, final HttpServletResponse response) {
         return userService.getUserOrder(id, orderId, response);
     }
 }
