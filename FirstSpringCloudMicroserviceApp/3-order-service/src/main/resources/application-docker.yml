@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://mysql-order-service/order_service
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+server:
+  port: 8081
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/
+    instance:
+      hostname: service-registry
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory-service:
+        automaticTransitionFromOpenToHalfOpenEnabled: 'true'
+        failureRateThreshold: '50'
+        slidingWindowType: COUNT_BASED
+        event-consumer-buffer-size: '10'
+        registerHealthIndicator: 'true'
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: '3'
+        slidingWindowSize: '5'
+  retry:
+    instances:
+      inventory-service:
+        wait-duration: 5s
+        max-attempts: '3'
+  timelimiter:
+    instances:
+      inventory-service:
+        timeout-duration: 3s

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://mysql-user-service/user_service
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+server:
+  port: '8080'
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/
+    instance:
+      hostname: service-registry

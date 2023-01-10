@@ -1,0 +1,78 @@
+version: '3'
+services:
+  service-registry:
+    container_name: service-registry
+    image: kpuda/first-spring-cloud/service-registry:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - springcloud
+    restart: on-failure
+  api-gateway:
+    container_name: api-gateway
+    image: kpuda/first-spring-cloud/api-gateway:latest
+    ports:
+      - "9191:9191"
+    networks:
+      - springcloud
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - service-registry
+    restart: on-failure
+
+  mysql-user-service:
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: user_service
+    ports:
+      - 3306:3306
+    networks:
+      - springcloud
+  user-service:
+    container_name: user-service
+    image: kpuda/first-spring-cloud/user-service:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - springcloud
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - mysql-user-service
+      - service-registry
+      - api-gateway
+    restart: on-failure
+  mysql-order-service:
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: order_service
+    ports:
+      - 3307:3307
+    networks:
+      - springcloud
+  order-service:
+    container_name: order-service
+    image: kpuda/first-spring-cloud/order-service:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - springcloud
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - service-registry
+      - api-gateway
+      - user-service
+      - mysql-order-service
+    restart: on-failure
+
+networks:
+  springcloud:
+    driver: bridge

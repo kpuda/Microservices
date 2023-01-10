@@ -81,7 +81,7 @@ public class OrderService {
     }
 
 
-    /* FALLBACK METHODS */
+    /* FALLBACK METHODS - used for feign api connection exceptions */
     public ResponseEntity<ResponseObject> fallbackMethod(OrderRequest orderRequest, HttpServletResponse response, HttpServletRequest request, Throwable runtimeException) {
         log.info("Fallback method");
         ResponseObject responseObject = new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Inventory service is unavailable at this moment, please order after some time!");
