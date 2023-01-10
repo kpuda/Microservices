@@ -1,6 +1,5 @@
 package com.kp.user.service.services;
 
-import com.kp.user.service.ServerConst;
 import com.kp.user.service.dto.UserDto;
 import com.kp.user.service.entity.User;
 import com.kp.user.service.repositories.UserRepository;
@@ -8,14 +7,15 @@ import com.kp.user.service.responses.ResponseObject;
 import com.kp.user.service.responses.UserResponseObject;
 import com.kp.user.service.responses.WrappedResponseObject;
 import com.kp.user.service.tools.Mapper;
+import com.kp.user.service.tools.ServerConst;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +36,7 @@ public class UserService {
     public ResponseObject postUser(UserDto userDto) {
         Optional<User> byFirstNameAndLastName = userRepository.findByFirstNameAndLastName(userDto.getFirstName(), userDto.getLastName());
         if (byFirstNameAndLastName.isPresent()) {
-            throw new EntityExistsException(ServerConst.USER_EXISTS_ALREADY.toString());
+            throw new EntityExistsException(ServerConst.USER_EXISTS_ALREADY.name());
         }
         userRepository.save(mapper.mapToUser(userDto));
         return new ResponseObject(HttpStatus.CREATED.value(), "Created");
@@ -53,22 +53,36 @@ public class UserService {
 
 
     @CircuitBreaker(name = "order-service", fallbackMethod = "userOrdersFallbackMethod")
-    public CompletableFuture<WrappedResponseObject> getUserOrders(Long id, HttpServletResponse response) {
-        return connectionService.getOrders(id);
-    }
-
-    @CircuitBreaker(name = "order-service", fallbackMethod = "userOrderFallbackMethod")
-    public CompletableFuture<WrappedResponseObject> getUserOrder(Long id, Long orderId, HttpServletResponse response) {
-        CompletableFuture<WrappedResponseObject> userOrder = connectionService.getUserOrder(id, orderId);
+    public WrappedResponseObject getUserOrders(Long id, HttpServletResponse response) {
+        ResponseEntity<WrappedResponseObject> responseEntity = null;
         try {
-            WrappedResponseObject wrappedResponseObject = userOrder.get();
+            responseEntity = connectionService.getOrders(id).get();
         } catch (InterruptedException e) {
-            log.info(e.getMessage());
+            e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-//        log.info("User order: " + userOrder.get().toString());
+        if (responseEntity == null) {
+            throw new EntityNotFoundException(ServerConst.LIST_IS_EMPTY.getMessage());
+        }
+        log.info("User order response from ORDER-SERVICE: " + responseEntity.getBody().toString());
+        return responseEntity.getBody();
+    }
 
+    @CircuitBreaker(name = "order-service", fallbackMethod = "userOrderFallbackMethod")
+    public WrappedResponseObject getUserOrder(Long id, Long orderId, HttpServletResponse response) {
+        WrappedResponseObject userOrder = null;
+        try {
+            userOrder = connectionService.getUserOrder(id, orderId).get();
+        } catch (InterruptedException e) {
+//            todo handleException
+        } catch (ExecutionException e) {
+//            todo handleException
+        }
+        if (userOrder == null) {
+            throw new EntityNotFoundException(ServerConst.LIST_IS_EMPTY.getMessage());
+        }
+        log.info("User order response from ORDER-SERVICE: " + userOrder);
         return userOrder;
     }
 
@@ -78,9 +92,9 @@ public class UserService {
         return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null));
     }
 
-    public CompletableFuture<WrappedResponseObject> userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response, RuntimeException runtimeException) {
+    public WrappedResponseObject userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response, RuntimeException runtimeException) {
         response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null));
+        return new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null);
     }
 
 }

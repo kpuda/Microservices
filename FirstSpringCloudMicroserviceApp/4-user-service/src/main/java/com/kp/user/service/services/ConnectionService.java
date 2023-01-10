@@ -22,7 +22,7 @@ public class ConnectionService {
         return CompletableFuture.supplyAsync(() -> orderClient.getOrders(id));
     }
 
-    public CompletableFuture<ResponseEntity<WrappedResponseObject>> getUserOrder(long id, long orderId) {
+    public CompletableFuture<WrappedResponseObject> getUserOrder(long id, long orderId) {
         log.info("Sending request to order client to fetch given order");
         return CompletableFuture.supplyAsync(() -> orderClient.getUserOrder(id, orderId));
     }
