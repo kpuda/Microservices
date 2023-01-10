@@ -22,5 +22,9 @@ public class User {
     @ElementCollection
     private List<Long> orderIdList;
 
+    public User(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
 
