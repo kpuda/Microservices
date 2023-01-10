@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Service
@@ -53,48 +51,34 @@ public class UserService {
 
 
     @CircuitBreaker(name = "order-service", fallbackMethod = "userOrdersFallbackMethod")
-    public WrappedResponseObject getUserOrders(Long id, HttpServletResponse response) {
-        ResponseEntity<WrappedResponseObject> responseEntity = null;
-        try {
-            responseEntity = connectionService.getOrders(id).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+    public ResponseEntity<?> getUserOrders(Long id, HttpServletResponse response) {
+        ResponseEntity<WrappedResponseObject> responseEntity = connectionService.getOrders(id);
+        if (responseEntity.getBody() != null) {
+            log.info("User order list response from ORDER-SERVICE: " + responseEntity.getBody().toString());
+        } else {
+            log.info("User order list is empty. Response payload" + responseEntity.toString());
         }
-        if (responseEntity == null) {
-            throw new EntityNotFoundException(ServerConst.LIST_IS_EMPTY.getMessage());
-        }
-        log.info("User order response from ORDER-SERVICE: " + responseEntity.getBody().toString());
-        return responseEntity.getBody();
+        return responseEntity;
     }
 
     @CircuitBreaker(name = "order-service", fallbackMethod = "userOrderFallbackMethod")
-    public WrappedResponseObject getUserOrder(Long id, Long orderId, HttpServletResponse response) {
-        WrappedResponseObject userOrder = null;
-        try {
-            userOrder = connectionService.getUserOrder(id, orderId).get();
-        } catch (InterruptedException e) {
-//            todo handleException
-        } catch (ExecutionException e) {
-//            todo handleException
+    public ResponseEntity<?> getUserOrder(Long id, Long orderId) {
+        ResponseEntity<WrappedResponseObject> responseEntity = connectionService.getUserOrder(id, orderId);
+        if (responseEntity.getBody() != null) {
+            log.info("User order response from ORDER-SERVICE: " + responseEntity.getBody().toString());
+        } else {
+            log.info("User order list is empty. Response payload" + responseEntity.toString());
         }
-        if (userOrder == null) {
-            throw new EntityNotFoundException(ServerConst.LIST_IS_EMPTY.getMessage());
-        }
-        log.info("User order response from ORDER-SERVICE: " + userOrder);
-        return userOrder;
+        return responseEntity;
     }
 
     /* FALLBACK METHODS */
-    public CompletableFuture<WrappedResponseObject> userOrdersFallbackMethod(Long id, HttpServletResponse response, RuntimeException runtimeException) {
-        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return CompletableFuture.supplyAsync(() -> new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null));
+    public ResponseEntity<?> userOrdersFallbackMethod(Long id, HttpServletResponse response, RuntimeException runtimeException) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    public WrappedResponseObject userOrderFallbackMethod(Long id, Long orderId, HttpServletResponse response, RuntimeException runtimeException) {
-        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-        return new WrappedResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Oops! Something went wrong, please order after some time!", null);
+    public ResponseEntity<?> userOrderFallbackMethod(Long id, Long orderId, RuntimeException runtimeException) {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
