@@ -1,10 +1,12 @@
 package com.kp.order.service.controllers;
 
+import com.kp.order.service.exceptions.NoContentException;
 import com.kp.order.service.responses.ResponseObject;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -27,11 +29,10 @@ public class ControllerAdvice {
         return new ResponseObject(HttpStatus.CONFLICT.value(), message.getMessage());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseObject notFoundException(Exception message) {
-        log.info("Throwing NotFoundException exception");
-        return new ResponseObject(HttpStatus.CONFLICT.value(), message.getMessage());
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity<?> noContentException(Exception message) {
+        log.info("Throwing NoContentException exception");
+        return new ResponseEntity<>(new ResponseObject(HttpStatus.NO_CONTENT.value(), message.getMessage()), HttpStatus.NO_CONTENT);
     }
 
 

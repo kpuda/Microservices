@@ -5,6 +5,7 @@ import lombok.Getter;
 public enum ServerConst {
 
     ORDER_NOT_FOUND("Order with given ID not found in database"),
+    ORDER_LIST_FOUND("Found list of orders"),
     LIST_IS_EMPTY("Order list is empty");
 
     @Getter

@@ -1,10 +1,10 @@
 package com.kp.order.service.services;
 
-import com.kp.order.service.controllers.NotFoundException;
 import com.kp.order.service.dto.InventoryResponse;
 import com.kp.order.service.dto.OrderRequest;
 import com.kp.order.service.entity.Order;
 import com.kp.order.service.entity.OrderItems;
+import com.kp.order.service.exceptions.NoContentException;
 import com.kp.order.service.repositories.OrderRepository;
 import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
@@ -59,24 +59,25 @@ public class OrderService {
         if (allProductsInStock) {
             log.info("Saving new order");
             orderRepository.save(order);
-            return new ResponseEntity<>(new ResponseObject(HttpStatus.CREATED.value(), "Order Placed Successfully"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseObject(HttpStatus.CREATED.value(), "Order Placed Successfully"), HttpStatus.CREATED);
         } else {
             throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
     }
 
-    @CircuitBreaker(name = "inventory", fallbackMethod = "userOrdersFallbackMethod")
-    public WrappedResponseObject getUserOrders(Long id) {
+    public ResponseEntity<WrappedResponseObject> getUserOrders(Long id) {
         log.info("Fetching order list for user");
-        List<Order> orderList = orderRepository.findAllByUserId(id);
-        return new WrappedResponseObject(HttpStatus.OK.value(), "Fetching orders list", orderList.stream().map(mapper::mapToOrderDto).toList());
+        List<Order> orderList = orderRepository.findAllByUserId(id).orElseThrow(() -> new NoContentException(ServerConst.LIST_IS_EMPTY.getMessage()));
+        if (orderList.isEmpty()) {
+            throw new NoContentException(ServerConst.LIST_IS_EMPTY.getMessage());
+        }
+        return new ResponseEntity<>(new WrappedResponseObject(HttpStatus.OK.value(), ServerConst.ORDER_LIST_FOUND.getMessage(), orderList.stream().map(mapper::mapToOrderDto).toList()), HttpStatus.ACCEPTED);
     }
 
-    @CircuitBreaker(name = "inventory", fallbackMethod = "userOrderFallbackMethod")
-    public WrappedResponseObject getUserOrder(long id, long orderId, HttpServletResponse response) {
+    public ResponseEntity<WrappedResponseObject> getUserOrder(long id, long orderId) {
         log.info("Fetching given order for user");
-        Order order = orderRepository.findByIdAndUserId(orderId, id).orElseThrow(() -> new NotFoundException(ServerConst.ORDER_NOT_FOUND.getMessage()));
-        return new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order)));
+        Order order = orderRepository.findByIdAndUserId(orderId, id).orElseThrow(() -> new NoContentException(ServerConst.ORDER_NOT_FOUND.getMessage()));
+        return new ResponseEntity<>(new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order))), HttpStatus.ALREADY_REPORTED);
     }
 
 
@@ -86,22 +87,9 @@ public class OrderService {
         ResponseObject responseObject = new ResponseObject(HttpStatus.SERVICE_UNAVAILABLE.value(), "Inventory service is unavailable at this moment, please order after some time!");
         if (runtimeException.getMessage().equalsIgnoreCase("Product is not in stock, please try again later")) {
             responseObject.setMessage("Cannot fulfill order because of not enough products");
-            responseObject.setStatusCode(HttpStatus.NO_CONTENT.value());
-            log.info("I dont understand why");
-            return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(responseObject, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(responseObject, HttpStatus.SERVICE_UNAVAILABLE);
-    }
-
-    public WrappedResponseObject userOrdersFallbackMethod(Long id, Throwable runtimeException) {
-        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), "There was problem while fetching user orders", null);
-    }
-
-    public WrappedResponseObject userOrderFallbackMethod(long id, long orderId, HttpServletResponse response, Throwable exception) {
-        ResponseEntity<WrappedResponseObject> responseEntity = new ResponseEntity<>(new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), ServerConst.LIST_IS_EMPTY.getMessage()), HttpStatus.CONFLICT);
-        log.info("Exception has been thrown while fetching user specific order. Exception message: " + exception.getMessage());
-        log.info("Response being sent: " + responseEntity);
-        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), ServerConst.LIST_IS_EMPTY.getMessage());
     }
 
 }
