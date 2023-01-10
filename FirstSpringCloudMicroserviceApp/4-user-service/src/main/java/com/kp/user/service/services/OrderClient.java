@@ -16,5 +16,5 @@ public interface OrderClient {
     public ResponseEntity<WrappedResponseObject> getOrders(@PathVariable Long id);
 
     @GetMapping("/{id}/orders/{orderId}")
-    public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId);
+    public ResponseEntity<WrappedResponseObject> getUserOrder(@PathVariable long id, @PathVariable long orderId);
 }
