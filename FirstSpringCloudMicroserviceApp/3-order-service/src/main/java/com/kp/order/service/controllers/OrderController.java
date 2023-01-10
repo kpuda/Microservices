@@ -30,6 +30,7 @@ public class OrderController {
         return orderService.getUserOrders(id);
     }
 
+    @ResponseBody
     @GetMapping("/{id}/orders/{orderId}")
     public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId, final HttpServletResponse response) {
         return orderService.getUserOrder(id, orderId, response);

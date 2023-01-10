@@ -9,6 +9,7 @@ import com.kp.order.service.repositories.OrderRepository;
 import com.kp.order.service.responses.ResponseObject;
 import com.kp.order.service.responses.WrappedResponseObject;
 import com.kp.order.service.tools.Mapper;
+import com.kp.order.service.tools.ServerConst;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -74,9 +75,10 @@ public class OrderService {
     @CircuitBreaker(name = "inventory", fallbackMethod = "userOrderFallbackMethod")
     public WrappedResponseObject getUserOrder(long id, long orderId, HttpServletResponse response) {
         log.info("Fetching given order for user");
-        Order order = orderRepository.findByIdAndUserId(orderId, id).orElseThrow(() -> new NotFoundException("Order not found"));
+        Order order = orderRepository.findByIdAndUserId(orderId, id).orElseThrow(() -> new NotFoundException(ServerConst.ORDER_NOT_FOUND.getMessage()));
         return new WrappedResponseObject(HttpStatus.OK.value(), "Order fetched.", List.of(mapper.mapToOrderDto(order)));
     }
+
 
     /* FALLBACK METHODS */
     public ResponseEntity<ResponseObject> fallbackMethod(OrderRequest orderRequest, HttpServletResponse response, HttpServletRequest request, Throwable runtimeException) {
@@ -96,8 +98,10 @@ public class OrderService {
     }
 
     public WrappedResponseObject userOrderFallbackMethod(long id, long orderId, HttpServletResponse response, Throwable exception) {
-        log.info("XD");
-        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), exception.getMessage(), null);
+        ResponseEntity<WrappedResponseObject> responseEntity = new ResponseEntity<>(new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), ServerConst.LIST_IS_EMPTY.getMessage()), HttpStatus.CONFLICT);
+        log.info("Exception has been thrown while fetching user specific order. Exception message: " + exception.getMessage());
+        log.info("Response being sent: " + responseEntity);
+        return new WrappedResponseObject(HttpStatus.NO_CONTENT.value(), ServerConst.LIST_IS_EMPTY.getMessage());
     }
 
 }
