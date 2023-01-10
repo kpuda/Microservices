@@ -5,14 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ResponseObject implements Serializable {
+public class ResponseObject {
 
-    private int statusCode;
-    private String message;
+    protected int statusCode;
+    protected String message;
+
+    @Override
+    public String toString() {
+        return "ResponseObject{" +
+                "statusCode: " + statusCode +
+                ", message: '" + message + '\'' +
+                '}';
+    }
 }
