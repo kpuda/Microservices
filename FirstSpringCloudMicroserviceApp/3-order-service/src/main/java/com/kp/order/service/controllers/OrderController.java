@@ -26,13 +26,13 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public WrappedResponseObject getOrders(@PathVariable Long id) {
+    public ResponseEntity<WrappedResponseObject> getOrders(@PathVariable Long id) {
         return orderService.getUserOrders(id);
     }
 
     @ResponseBody
     @GetMapping("/{id}/orders/{orderId}")
-    public WrappedResponseObject getUserOrder(@PathVariable long id, @PathVariable long orderId, final HttpServletResponse response) {
-        return orderService.getUserOrder(id, orderId, response);
+    public ResponseEntity<WrappedResponseObject> getUserOrder(@PathVariable long id, @PathVariable long orderId) {
+        return orderService.getUserOrder(id, orderId);
     }
 }
