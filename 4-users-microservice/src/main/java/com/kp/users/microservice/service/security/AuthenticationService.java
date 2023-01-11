@@ -1,10 +1,10 @@
-package com.kp.users.microservice.service;
+package com.kp.users.microservice.service.security;
 
 import com.kp.users.microservice.model.AuthenticationResponse;
 import com.kp.users.microservice.model.LoginModel;
+import com.kp.users.microservice.service.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 

@@ -1,4 +1,4 @@
-package com.kp.users.microservice.filters;
+package com.kp.users.microservice.service.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -83,6 +83,6 @@ public class AuthorizationFilter extends OncePerRequestFilter implements Authent
         response.getHeader("XD");
 //        ErrorResponseObject xD = new ErrorResponseObject(HttpStatus.UNAUTHORIZED.value(), "xD", null);
 //        response.getWriter().write(xD.toString());
-//        response.getOutputStream().println(xD.toString());
+//        response.getOutputStream().println(xD.toString()); todo?
     }
 }

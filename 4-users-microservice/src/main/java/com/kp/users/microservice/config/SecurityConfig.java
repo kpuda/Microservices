@@ -1,7 +1,7 @@
 package com.kp.users.microservice.config;
 
-import com.kp.users.microservice.filters.AuthorizationFilter;
-import com.kp.users.microservice.service.CustomAuthenticationProvider;
+import com.kp.users.microservice.service.security.AuthorizationFilter;
+import com.kp.users.microservice.service.security.CustomAuthenticationProvider;
 import com.kp.users.microservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

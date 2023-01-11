@@ -1,5 +1,6 @@
-package com.kp.users.microservice.service;
+package com.kp.users.microservice.service.security;
 
+import com.kp.users.microservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,8 +20,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UserDetails userDetails = userService.loadUserByUsername(authentication.getName());
-//        boolean matches = passwordEncoder.matches(s, password); TODO later
-//        if (userDetails != null && equals) {
         if (userDetails != null && passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials().toString(), userDetails.getAuthorities());
         } else {

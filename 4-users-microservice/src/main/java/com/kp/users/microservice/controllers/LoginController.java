@@ -2,7 +2,7 @@ package com.kp.users.microservice.controllers;
 
 import com.kp.users.microservice.model.AuthenticationResponse;
 import com.kp.users.microservice.model.LoginModel;
-import com.kp.users.microservice.service.AuthService;
+import com.kp.users.microservice.service.security.AuthenticationService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/login")
 public class LoginController {
-    private final AuthService authenticationService;
+    private final AuthenticationService authenticationService;
 
-    @PostMapping("/login")
+    @PostMapping("/xd")
     public AuthenticationResponse authenticateUser(@RequestBody LoginModel request, HttpServletResponse response) {
         return authenticationService.authenticate(request, response);
     }
