@@ -24,9 +24,9 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String jwtSecret;
     @Value("${jwt.issuer}")
-    private String tokenInssuer;
+    private String tokenIssuer;
     @Value("${jwt.expiration-time}")
-    private String tokenExpirationTime;
+    private long tokenExpirationTime;
 
 
     public String generateJWToken(Authentication user, Date date, Algorithm algorithm) {
@@ -34,7 +34,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(date)
-                .withIssuer(tokenExpirationTime)
+                .withIssuer(tokenIssuer)
                 .withClaim("roles", claimsFromUser)
                 .sign(algorithm);
     }
@@ -43,7 +43,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000))
-                .withIssuer(tokenExpirationTime)
+                .withIssuer(tokenIssuer)
                 .sign(algorithm);
     }
 
@@ -60,7 +60,7 @@ public class JwtUtils {
         JWTVerifier jwtVerifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-            jwtVerifier = JWT.require(algorithm).withIssuer(tokenExpirationTime).build();
+            jwtVerifier = JWT.require(algorithm).withIssuer(tokenIssuer).build();
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Bad token");
         }
@@ -71,7 +71,6 @@ public class JwtUtils {
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
         Date date = new Date(System.currentTimeMillis() + tokenExpirationTime);
         String accessToken = generateJWToken(user, date, algorithm);
-        String refreshToken = generateJWTRefreshToken(user, date, algorithm);
         response.setContentType(APPLICATION_JSON_VALUE);
         response.addHeader("token", accessToken);
         response.addHeader("userId", user.getName());

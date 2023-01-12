@@ -6,6 +6,9 @@ spring:
   devtools:
     restart:
       enabled: false
+  config:
+    import: optional:configserver:http://localhost:8012
+
   datasource:
     url: jdbc:h2:file:/data/springcloud
     username: sa
@@ -30,9 +33,9 @@ eureka:
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
 
-#application_id: yes
+#application_id: yes TODO UNUSED BECAUSE OF CONFIG SERVER
 #
 #jwt:
 #  secret: xd
-#  issuer: API-GATEWAY
-#  expiration-time: 604800000
+#  issuer: API-GATEWAY3
+#  expiration-time: 6048021321
