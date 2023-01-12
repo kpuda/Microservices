@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/kpuda/SpringCloudConfigRepo
           username: kpuda
-          password: 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
+          password: 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
           clone-on-start: true
           default-label: main
 
