@@ -1,13 +1,13 @@
-package com.kp.users.microservice.service;
+package com.kp.users.microservice.tools;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.kp.users.microservice.model.AuthenticationResponse;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    //    private final ApplicationProperties applicationProperties;
+    @Value("${jwt.secret}")
+    private String jwtSecret;
     public static final long EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
 
 
@@ -55,7 +56,7 @@ public class JwtUtils {
     private JWTVerifier getJWTVerifier() {
         JWTVerifier jwtVerifier;
         try {
-            Algorithm algorithm = Algorithm.HMAC256("XD".getBytes());
+            Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
             jwtVerifier = JWT.require(algorithm).withIssuer("API-GATEWAY").build();
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Bad token");
@@ -64,7 +65,7 @@ public class JwtUtils {
     }
 
     public AuthenticationResponse setHttpHeaders(Authentication user, HttpServletResponse response) {
-        Algorithm algorithm = Algorithm.HMAC256("XD".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
         Date date = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
         String accessToken = generateJWToken(user, date, algorithm);
         String refreshToken = generateJWTRefreshToken(user, date, algorithm);

@@ -24,7 +24,6 @@ spring:
             #            - Path=/usr/** # this is custom path which might be re-routed to e.g. /users in filter below
             - Method=GET, POST, PUT, DELETE #set methods of requests
             - Header= Authorization, Bearer (.*)
-
           #     Below you can find documentation links for filters etc
           #            - Host=**.somehost.org,**.anotherhost.org
           #            - Header=X-Request-Id, \d+
@@ -37,6 +36,7 @@ spring:
           #          https://cloud.spring.io/spring-cloud-gateway/reference/html/#httpheadersfilters
           filters:
             - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
 #            - RewritePath=/usr/, /users/ # Here I am rewriting path /usr from request to send request to /users
 
 
@@ -44,3 +44,5 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka
+
+jwt.secret: xd

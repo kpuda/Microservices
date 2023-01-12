@@ -2,7 +2,7 @@ package com.kp.users.microservice.service.security;
 
 import com.kp.users.microservice.model.AuthenticationResponse;
 import com.kp.users.microservice.model.LoginModel;
-import com.kp.users.microservice.service.JwtUtils;
+import com.kp.users.microservice.tools.JwtUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

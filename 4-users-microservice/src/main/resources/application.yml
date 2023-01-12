@@ -29,3 +29,5 @@ eureka:
     instance-id: ${spring.application.name}:${application_id:0}:${random.value}
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
+
+jwt.secret: xd
