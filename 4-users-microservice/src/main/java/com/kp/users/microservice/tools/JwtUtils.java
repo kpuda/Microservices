@@ -25,8 +25,8 @@ public class JwtUtils {
     private String jwtSecret;
     @Value("${jwt.issuer}")
     private String tokenInssuer;
-
-    public static final long EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
+    @Value("${jwt.expiration-time}")
+    private String tokenExpirationTime;
 
 
     public String generateJWToken(Authentication user, Date date, Algorithm algorithm) {
@@ -34,7 +34,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(date)
-                .withIssuer(tokenInssuer)
+                .withIssuer(tokenExpirationTime)
                 .withClaim("roles", claimsFromUser)
                 .sign(algorithm);
     }
@@ -43,7 +43,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000))
-                .withIssuer(tokenInssuer)
+                .withIssuer(tokenExpirationTime)
                 .sign(algorithm);
     }
 
@@ -60,7 +60,7 @@ public class JwtUtils {
         JWTVerifier jwtVerifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-            jwtVerifier = JWT.require(algorithm).withIssuer(tokenInssuer).build();
+            jwtVerifier = JWT.require(algorithm).withIssuer(tokenExpirationTime).build();
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Bad token");
         }
@@ -69,7 +69,7 @@ public class JwtUtils {
 
     public AuthenticationResponse setHttpHeaders(Authentication user, HttpServletResponse response) {
         Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-        Date date = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
+        Date date = new Date(System.currentTimeMillis() + tokenExpirationTime);
         String accessToken = generateJWToken(user, date, algorithm);
         String refreshToken = generateJWTRefreshToken(user, date, algorithm);
         response.setContentType(APPLICATION_JSON_VALUE);

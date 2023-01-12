@@ -27,10 +27,10 @@ public class UserController {
         return "working on port " + env.getProperty("local.server.port");
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createUser(@Valid @RequestBody CreateUserRequestModel model) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(model, UserDto.class);
-       return userService.createUser(userDto);
+        return userService.createUser(userDto);
     }
 }
