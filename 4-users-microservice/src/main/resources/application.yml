@@ -30,4 +30,8 @@ eureka:
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
 
-jwt.secret: xd
+application_id: yes
+
+jwt:
+  secret: xd
+  issuer: API-GATEWAY

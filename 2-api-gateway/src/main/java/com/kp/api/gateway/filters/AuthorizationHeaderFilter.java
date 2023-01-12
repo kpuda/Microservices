@@ -27,6 +27,8 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
     @Value("${jwt.secret}")
     private String jwtSecret;
+    @Value("${jwt.issuer}")
+    private String tokenInssuer;
 
     public AuthorizationHeaderFilter() {
         super(Config.class);
@@ -73,7 +75,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         JWTVerifier jwtVerifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-            jwtVerifier = JWT.require(algorithm).withIssuer("API-GATEWAY").build();
+            jwtVerifier = JWT.require(algorithm).withIssuer(tokenInssuer).build();
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Bad token");
         }
@@ -87,8 +89,6 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
         public Config() {
         }
-
-        ;
 
         public Config(String baseMessage, boolean preLogger, boolean postLogger) {
             super();

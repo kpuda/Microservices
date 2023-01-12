@@ -23,6 +23,9 @@ public class JwtUtils {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
+    @Value("${jwt.issuer}")
+    private String tokenInssuer;
+
     public static final long EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000;
 
 
@@ -31,7 +34,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(date)
-                .withIssuer("API-GATEWAY")
+                .withIssuer(tokenInssuer)
                 .withClaim("roles", claimsFromUser)
                 .sign(algorithm);
     }
@@ -40,7 +43,7 @@ public class JwtUtils {
         return JWT.create()
                 .withSubject(user.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 14 * 24 * 60 * 60 * 1000))
-                .withIssuer("API-GATEWAY")
+                .withIssuer(tokenInssuer)
                 .sign(algorithm);
     }
 
@@ -57,7 +60,7 @@ public class JwtUtils {
         JWTVerifier jwtVerifier;
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes());
-            jwtVerifier = JWT.require(algorithm).withIssuer("API-GATEWAY").build();
+            jwtVerifier = JWT.require(algorithm).withIssuer(tokenInssuer).build();
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException("Bad token");
         }

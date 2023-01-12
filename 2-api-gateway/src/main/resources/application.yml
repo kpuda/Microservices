@@ -1,7 +1,8 @@
 server:
   port: 8082
-#  address: 192.168.2.81 TODO change adddress?
+  #  address: 192.168.2.81 #TODO change adddress?
 
+  tomcatip
 spring:
   application:
     name: api-gateway
@@ -45,4 +46,6 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka
 
-jwt.secret: xd
+jwt:
+  secret: xd
+  issuer: API-GATEWAY
