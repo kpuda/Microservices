@@ -1,0 +1,16 @@
+server:
+  port: 8012
+
+spring:
+  application:
+    name: cloud-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/kpuda/SpringCloudConfigRepo
+          username: kpuda
+          password: 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
+          clone-on-start: true
+          default-label: main
+
