@@ -2,7 +2,6 @@ server:
   port: 8082
   #  address: 192.168.2.81 #TODO change adddress?
 
-  tomcatip
 spring:
   application:
     name: api-gateway
