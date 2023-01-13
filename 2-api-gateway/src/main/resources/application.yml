@@ -7,3 +7,8 @@ spring:
   profiles:
     active: api-gateway
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans, health, routes, httptrace #todo
