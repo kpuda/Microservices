@@ -1,0 +1,13 @@
+application_id: cloud
+
+jwt:
+  secret: newSecret123
+  issuer: API-GATEWAY
+  expiration-time: 604800000
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8010/eureka
+  instance:
+    instance-id: ${spring.application.name}:${application_id:0}:${random.value}
