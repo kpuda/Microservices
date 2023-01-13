@@ -3,14 +3,19 @@ server:
   #  address: 192.168.2.81 #TODO change adddress?
 
 spring:
+  #APP NAME
   application:
     name: api-gateway
+    #CONFIG SERVER
+  config:
+    import: optional:configserver:http://localhost:8012
   cloud:
     gateway:
       discovery:
         locator: #first option lets you choose communication between predicate path or "application name" path: for example /users-ms/user/** <- users-ms is application name of my user service
           enabled: true
           lower-case-service-id: true
+          #REROUTE INCOMING REQUESTS
       routes:
         - id: login  #id of this route
           uri: lb://users-ms #this enables to communicate with microservice without knowing its address. It simly uses service discovery to connect
@@ -39,12 +44,12 @@ spring:
             - AuthorizationHeaderFilter
 #            - RewritePath=/usr/, /users/ # Here I am rewriting path /usr from request to send request to /users
 
-
+  #REGISTER TO SERVICE REGISTRY
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8010/eureka
 
-jwt:
-  secret: xd
-  issuer: API-GATEWAY
+#jwt:
+#  secret: xd
+#  issuer: API-GATEWAY
