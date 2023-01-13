@@ -1,4 +1,4 @@
-application_id: yes
+application_id: gateway-ms
 
 server:
   port: 8082

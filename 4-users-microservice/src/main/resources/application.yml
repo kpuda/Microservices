@@ -9,20 +9,8 @@ spring:
   #CONFIG SERVER
   config:
     import: optional:configserver:http://localhost:8012
-  #DB
-  datasource:
-    url: jdbc:h2:file:/data/springcloud
-    username: sa
-    password:
-    driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-    hibernate.ddl-auto: update
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
+  profiles:
+    active: users-ms
 
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd

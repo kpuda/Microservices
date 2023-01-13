@@ -1,10 +1,9 @@
 spring:
   application:
-    name: apiGateway
-  profiles.active: gateway
+    name: api-gateway
   #CONFIG SERVER
   config:
     import: optional:configserver:http://localhost:8012
-
-#REGISTER TO SERVICE REGISTRY
+  profiles:
+    active: api-gateway
 
