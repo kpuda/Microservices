@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/status/check")
     public String status() {
-        return "working on port " + env.getProperty("local.server.port");
+        return "working on port: " + env.getProperty("local.server.port")+", with token secret: "+env.getProperty("jwt.secret");
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
