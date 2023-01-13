@@ -4,14 +4,20 @@ server:
 
 spring:
   #PROFILE FOR CONFIG SERVER
-  profiles:
-    active: gateway
+#  profiles:
+#    active: gateway
   #APP NAME
   application:
     name: api-gateway
   #CONFIG SERVER
   config:
     import: optional:configserver:http://localhost:8012
+  #rabbitMQ connection
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   #GATEWAY ROUTE INCOMING REQUESTS
   cloud:
     gateway:
