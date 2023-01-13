@@ -23,19 +23,5 @@ spring:
       settings:
         web-allow-others: true
 
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8010/eureka
-  instance:
-    instance-id: ${spring.application.name}:${application_id:0}:${random.value}
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
-
-#application_id: yes TODO UNUSED BECAUSE OF CONFIG SERVER
-#
-#jwt:
-#  secret: xd
-#  issuer: API-GATEWAY3
-#  expiration-time: 6048021321
