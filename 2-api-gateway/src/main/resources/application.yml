@@ -11,4 +11,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: beans, health, routes, httptrace #todo
+        include: beans, health, routes, httptrace, mappings #todo

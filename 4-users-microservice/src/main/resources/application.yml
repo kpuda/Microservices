@@ -14,3 +14,9 @@ spring:
 
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans, health, routes, httptrace, mappings #todo why doesnt it work

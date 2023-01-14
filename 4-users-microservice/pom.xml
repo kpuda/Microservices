@@ -57,6 +57,12 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- DB-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
         <!-- JWT-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -82,6 +88,10 @@
         </dependency>
 
         <!-- UTILITY -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
