@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient(value = "albums-ms")
 public interface AlbumsServiceClient {
 
-    @GetMapping("/users/{id}/albums")
+    @GetMapping("/users/{id}/albumss") //todo albumss is misspelled to check how circuitbreaker works
     public List<AlbumResponseModel> getUserAlbums(@PathVariable String id);
 
 }
