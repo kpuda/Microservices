@@ -2,6 +2,7 @@ package com.kp.users.microservice.controllers;
 
 import com.kp.users.microservice.dto.UserDto;
 import com.kp.users.microservice.model.CreateUserRequestModel;
+import com.kp.users.microservice.model.UserResponseModel;
 import com.kp.users.microservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,5 +32,10 @@ public class UserController {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = modelMapper.map(model, UserDto.class);
         return userService.createUser(userDto);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponseModel> getUser(@PathVariable("userId") String userId) {
+        return userService.getUser(userId);
     }
 }

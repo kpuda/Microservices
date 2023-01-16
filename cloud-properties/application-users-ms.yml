@@ -9,7 +9,7 @@ spring:
 #    driverClassName: org.h2.Driver
   jpa:
 #    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update # todo jce java cryptography extension
 #  h2:
 #    console:
 #      enabled: true

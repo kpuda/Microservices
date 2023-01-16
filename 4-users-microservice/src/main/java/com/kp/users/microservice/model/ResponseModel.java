@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseModel {
-    private int statusCode;
-    private String message;
+    protected int statusCode;
+    protected String message;
 }

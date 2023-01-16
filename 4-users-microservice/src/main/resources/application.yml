@@ -20,3 +20,7 @@ management:
     web:
       exposure:
         include: beans, health, routes, httptrace, mappings #todo why doesnt it work
+
+logging:
+  level:
+    com.kp.users.microservice.service.AlbumsServiceClient: DEBUG
