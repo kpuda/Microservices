@@ -6,13 +6,11 @@ spring:
     url: jdbc:mysql://localhost:3306/microservice_db
     username: root
     password: root
-#    driverClassName: org.h2.Driver
   jpa:
-#    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: update # todo jce java cryptography extension
-#  h2:
-#    console:
-#      enabled: true
-#      settings:
-#        web-allow-others: true
+
+#Logging feign client in debug mode
+logging:
+  level:
+    com.kp.users.microservice.service.AlbumsServiceClient: DEBUG
 

@@ -42,3 +42,11 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - AuthorizationHeaderFilter
+        - id: users-ms-actuator
+          uri: lb://users-ms
+          predicates:
+            - Path=/users-ms/actuator/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ms/(?<segment>.*), /$\{segment}
