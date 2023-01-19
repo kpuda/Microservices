@@ -14,7 +14,7 @@ spring:
         git: #we set git if we want to download properties from remote repo.
           uri: https://github.com/kpuda/SpringCloudConfigRepo
           username: kpuda
-          password: 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
+          password: tbd #this password is unused
           clone-on-start: true
           default-label: main
 
