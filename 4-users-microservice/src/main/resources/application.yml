@@ -15,19 +15,28 @@ spring:
     #application_id is spring boot run arg
     #mvn spring-boot:run -Dspring-boot.run.arguments=--application_id=xd
 resilience4j:
+  #CIRCUIT BREAKER CONFIG
   circuitbreaker:
-    circuit-breaker-aspect-order: 1 # todo aspect orders
     instances:
       albums-ms:
-      failure-rate-treshold: 50
-      automatic-transition-from-open-to-half-open-enabbled: true #todo open/half open learn more about states in future
-      wait-duration-in-open-state: 10000ms
-      sliding-window-type: COUNT_BASED
-      sliding-window-size: 2
-      minimum-number-of-calls: 10
-      event-consumer-buffer-size: 10
+        failure-rate-treshold: 50
+        automatic-transition-from-open-to-half-open-enabled: true #todo open/half open learn more about states in future
+        wait-duration-in-open-state: 10000ms
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 2
+        minimum-number-of-calls: 10
+        event-consumer-buffer-size: 10
+    circuit-breaker-aspect-order: 1
+  #RETRY CONFIG
   retry:
+    instances:
+      albums-ms:
+        max-attempts: 3
+        wait-duration: 2s
+        enable-exponential-backoff: true #this enables to make wait duration longer every next duration
+        exponential-backoff-multiplier: 5 #this is multiplier of wait-duration
     retry-aspect-order: 2 # todo aspect orders with value of 2 - retry has higher priority over circuitbreaker
+
 
 management:
   endpoints:

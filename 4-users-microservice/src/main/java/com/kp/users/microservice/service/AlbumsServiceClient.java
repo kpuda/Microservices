@@ -14,7 +14,7 @@ import java.util.List;
 public interface AlbumsServiceClient {
 
     @GetMapping("/users/{id}/albums") //todo albumss is misspelled to check how circuitbreaker works
-    @Retry(name = "albums-ms"/*,fallbackMethod = "getAlbumsFallback"*/) // <- we can either create circuitbreker - or remove it and declare fallback method in retry annotation
+    @Retry(name = "albums-ms") /*,fallbackMethod = "getAlbumsFallback"*/// <- we can either create circuitbreker - or remove it and declare fallback method in retry annotation
     @CircuitBreaker(name = "albums-ms", fallbackMethod = "getAlbumsFallback")// <- fallback methods should match with name, parameters and return type. Additionally, it should have some Exception as an argument
     public List<AlbumResponseModel> getUserAlbums(@PathVariable String id);
 

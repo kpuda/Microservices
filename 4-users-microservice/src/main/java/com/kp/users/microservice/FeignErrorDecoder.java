@@ -11,6 +11,7 @@ public class FeignErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String methodKey, Response response) {
+        System.out.println("ErrorDecoder triggered"); // todo testing purposes
         switch (response.status()) {
             case 400:
                 //do something
