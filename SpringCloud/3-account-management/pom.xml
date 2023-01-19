@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kp</groupId>
-    <artifactId>AccountManaagement</artifactId>
+    <artifactId>account-management</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>3- AccountManaagement</name>
-    <description>3- AccountManaagement</description>
+    <name>3-account-management</name>
+    <description>3-account-management</description>
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.0</spring-cloud.version>

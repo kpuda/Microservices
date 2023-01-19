@@ -11,8 +11,8 @@
     <groupId>com.kp</groupId>
     <artifactId>users-microservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>2-users-microservice</name>
-    <description>2-users-microservice</description>
+    <name>4-users-microservice</name>
+    <description>4-users-microservice</description>
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.0</spring-cloud.version>

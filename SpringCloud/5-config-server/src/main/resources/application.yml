@@ -10,13 +10,13 @@ spring:
     config:
       server:
         native: # we set native if we want to use native files system
-          search-locations: file:\${user.dir}\cloud-properties\
-        git: #we set git if we want to download properties from remote repo.
-          uri: https://github.com/kpuda/SpringCloudConfigRepo
-          username: kpuda
-          password: tbd #this password is unused
-          clone-on-start: true
-          default-label: main
+          search-locations: file:\${user.dir}\SpringCloud\cloud-properties\
+#        git: #we set git if we want to download properties from remote repo.
+#          uri: https://github.com/kpuda/SpringCloudConfigRepo
+#          username: kpuda
+#          password: tbd #this password is unused
+#          clone-on-start: true
+#          default-label: main
 
   #rabbitMQ connection
   rabbitmq:

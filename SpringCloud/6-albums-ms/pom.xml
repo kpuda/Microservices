@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.appsdeveloperblog.photoapp.api.albums</groupId>
-    <artifactId>PhotoAppApiAlbums</artifactId>
+    <artifactId>6-albums-microservice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>PhotoAppApiAlbums</name>
+    <name>6-albums-microservice</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

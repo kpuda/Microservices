@@ -24,6 +24,8 @@
         <module>2-api-gateway</module>
         <module>3-account-management</module>
         <module>4-users-microservice</module>
+        <module>5-config-server</module>
+        <module>6-albums-ms</module>
     </modules>
 
 </project>
