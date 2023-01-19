@@ -1,0 +1,52 @@
+application_id: gateway-ms
+
+server:
+  port: 8082
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator: #first option lets you choose communication between predicate path or "application name" path: for example /users-ms/user/** <- users-ms is application name of my user service
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: login  #id of this route
+          uri: lb://users-ms #this enables to communicate with microservice without knowing its address. It simly uses service discovery to connect
+          predicates: #Predicates is like if statement
+            - Path=/login/** #route for given path
+            - Method=POST
+        - id: register  #id of this route
+          uri: lb://users-ms #this enables to communicate with microservice without knowing its address. It simly uses service discovery to connect
+          predicates: #Predicates is like if statement
+            - Path=/users #route for given path
+            - Method=POST
+        - id: users  #id of this route
+          uri: lb://users-ms #this enables to communicate with microservice without knowing its address. It simly uses service discovery to connect
+          predicates: #Predicates is like if statement
+            - Path=/users/** #route for given path
+            #            - Path=/usr/** # this is custom path which might be re-routed to e.g. /users in filter below
+            - Method=GET, POST, PUT, DELETE #set methods of requests
+            - Header= Authorization, Bearer (.*)
+          #            - RewritePath=/usr/, /users/ # Here I am rewriting path /usr from request to send request to /users
+          #     Below you can find documentation links for filters etc
+          #            - Host=**.somehost.org,**.anotherhost.org
+          #            - Header=X-Request-Id, \d+
+          #            - Cookie=chocolate, ch.p in headers there should be value of Cookie chocolate=ch.p
+          #            - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+          #            - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+          #            - Between=2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]
+          #          https://cloud.spring.io/spring-cloud-gateway/reference/html/#gatewayfilter-factories
+          #          https://cloud.spring.io/spring-cloud-gateway/reference/html/#global-filters
+          #          https://cloud.spring.io/spring-cloud-gateway/reference/html/#httpheadersfilters
+          filters:
+            - RemoveRequestHeader=Cookie
+            - AuthorizationHeaderFilter
+        - id: users-ms-actuator
+          uri: lb://users-ms
+          predicates:
+            - Path=/users-ms/actuator/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users-ms/(?<segment>.*), /$\{segment}
