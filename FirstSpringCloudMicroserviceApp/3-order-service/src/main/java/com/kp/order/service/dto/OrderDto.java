@@ -1,6 +1,6 @@
 package com.kp.order.service.dto;
 
-import com.kp.order.service.entity.OrderItems;
+import com.kp.order.service.entity.Items;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,5 +16,5 @@ public class OrderDto {
     private Long id;
     private Long userId;
     private String orderNumber;
-    private List<OrderItems> orderItemsList;
+    private List<Items> orderItemsList;
 }
