@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @ToString
 @Getter
 @Setter
-public class OrderItemsDto {
+public class ItemsDto {
     private Long id;
     private String rfidCode;
     private BigDecimal price;

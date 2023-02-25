@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: api-gateway
+  #CONFIG SERVER
+  config:
+    import: optional:configserver:http://localhost:8012
+  profiles:
+    active: api-gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans, health, routes, httptrace, mappings #todo

@@ -14,6 +14,12 @@ import java.util.concurrent.CompletableFuture;
 public class ConnectionService {
 
     private final InventoryClient inventoryClient;
+    private final UserClient userClient;
+
+    public CompletableFuture<?> isUserAvailable(long id) {
+        log.info("Connecting to user-service");
+        return CompletableFuture.supplyAsync(() -> userClient.getUserById(id));
+    }
 
     public CompletableFuture<List<InventoryResponse>> isInStock(List<String> items) {
         log.info("Connecting to the inventory-service");

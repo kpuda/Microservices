@@ -14,6 +14,17 @@
     <file url="file://$PROJECT_DIR$/MicroServices/db.microservice/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroServices/rest.microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroServices/rest.microservice/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/1-service-discovery/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/1-service-discovery/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/2-api-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/2-api-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/3-account-management/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/3-account-management/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/4-users-microservice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/4-users-microservice/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/5-config-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/6-albums-ms/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SpringCloud/6-albums-ms/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/SpringDockerMicroservice/db.microservice/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/SpringDockerMicroservice/rest.microservice/src/main/java" charset="UTF-8" />
   </component>

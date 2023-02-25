@@ -12,5 +12,5 @@ import java.util.List;
 @ToString
 public class OrderRequest {
     private long userId;
-    private List<OrderItemsDto> orderList;
+    private List<ItemsDto> orderList;
 }
